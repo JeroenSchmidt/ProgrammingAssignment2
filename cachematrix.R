@@ -1,15 +1,43 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Coursera Intorduction to R - Assignment 2
+## The following script contains functions that cache a matrix and conputes the inverse of a matrix
 
-## Write a short comment describing this function
+## Create a cached matrix
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(m = matrix()) {
+  i <<- NULL
+  
+  setMatrix <- function(matrix){
+    m <<- matrix
+    i <<- NULL #set the inverse to null if a new matrix is assigned
+  } 
+  
+  getMatrix <- function() m
+  
+  setInverse <- function(inverse) i <<- inverse
+  getInverse <- function() i
+  
+  
+  list(setMatrix = setMatrix, getMatrix = getMatrix,
+       setInverse = setInverse,
+       getInverse = getInverse)
 }
 
 
-## Write a short comment describing this function
+## Computes the inverse of a cached matrix. If the inverse has already been calculated 
+## (and the matrix has not changed), then cacheSolve retrieves the inverse from the cache.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  ## Return a matrix that is the inverse of 'x'
+  
+  i <- x$getInverse()
+  if(!is.null(i)) {
+    message("getting cached data")
+    return(i)
+  }
+  
+  message("computing new inverse")
+  data <- x$getMatrix()
+  m <- solve(data, ...)
+  x$setInverse(m)
+  m
 }
